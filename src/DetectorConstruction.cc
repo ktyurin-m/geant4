@@ -155,22 +155,13 @@ namespace project
                       fCheckOverlaps);
 
     auto mesh1 = CADMesh::TessellatedMesh::FromOBJ("./tube-Tube.obj");
-    //-------------------------------------------------------------
-    auto cylinder = new G4LogicalVolume(mesh1->GetSolid("Cylinder"), Vacuum, "logic", 0, 0, 0);
+    //====================================================================================================================
+    auto cylinder = new G4LogicalVolume(mesh1->GetSolid("Cylinder"), Vacuum, "logic", 0, 0, 0); //Вакуумная труба 
     G4RotationMatrix *rot = new G4RotationMatrix();
     rot->rotateY(90 * deg);
     new G4PVPlacement(rot, G4ThreeVector(length_vac / 2 + 2 * mm, 0, 0), cylinder, "Staff", Boxvac1, false, 2, fCheckOverlaps);
 
-    G4Box *solidbox = new G4Box("Box", 2 * cm, 10 * cm, 10 * cm); // sdelat vacuum
-    Box = new G4LogicalVolume(solidbox, Fe, "Box");               // detector
-    new G4PVPlacement(0,
-                      G4ThreeVector(8.7 * m + 2 * mm, 0, 0),
-                      Box,
-                      "Box",
-                      worldLV,
-                      false,
-                      2,
-                      fCheckOverlaps);
+ 
     auto tubem = new G4LogicalVolume(mesh1->GetSolid("Tube"), Fe, "logic", 0, 0, 0);
     new G4PVPlacement(rot, G4ThreeVector(length_vac / 2, 0, 0), tubem, "Staff", Boxvac1, false, 2, fCheckOverlaps);
 
@@ -184,7 +175,16 @@ namespace project
                       false,
                       0,
                       fCheckOverlaps);
-
+   G4Box *solidbox = new G4Box("Box", 2*mm, 10 * cm, 10 * cm); // 
+    Box = new G4LogicalVolume(solidbox, Vacuum, "Box");               // detector
+    new G4PVPlacement(rot,
+                      G4ThreeVector(0, 0, 8.7*m - 10*cm),
+                      Box,
+                      "Box",
+                      cylinder,
+                      false,
+                      3,
+                      0);
     // test
     G4double l = 1.76 * 0.1 * cm;
     G4Box *conv = new G4Box("conv", l / 2, 10 * cm, 10 * cm);
