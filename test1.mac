@@ -1,0 +1,7 @@
+/run/initialize
+/gps/particle e-
+/gps/ene/mono 1800 MeV
+
+/gps/direction 1 0 0
+/gps/position -10 0 0
+/run/beamOn 500000
