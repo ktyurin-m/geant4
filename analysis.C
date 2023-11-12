@@ -10,10 +10,7 @@
 
 
 void analysis(){
-// string cwa = "check_with_air.root";
-Double_t a = 2;
-Double_t b = 4;
-    TFile *f = new TFile("out.root");
+    TFile *f = new TFile("build/out.root");
     TTree *t = (TTree*)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -26,17 +23,19 @@ Double_t b = 4;
 
     TH2F *h1 = new TH2F("h1","h1",100,-60,60,100,0,1800);
     TH2F *h2 = new TH2F("h2","h2",100,-60,60,100,-60,60);
-    TH1F *h3  = new TH1F("HistOfEnergy","HistOfEnergy",200, 0,1800) ; //energy
+    TH1F *h3  = new TH1F("HistOfEnergy","HistOfEnergy",300, 0,1900) ; //energy
     // TH1F *h4  = new TH1F("h3","h3",300, -100,100) ;
     Int_t ent = t->GetEntries();
     for (Int_t i = 0; i < ent; i++)
     {
+        // cout << x << endl;
         t->GetEntry(i);
-        if (x == 0)
+        Double_t xp = x;
+        if (true)
         {   
-            h1->Fill(z, Energy);
+            // h1->Fill(z, Energy);
             h3->Fill(Energy);
-            h2->Fill(y,z);
+            // h2->Fill(y,z);
         }
         
 
@@ -50,9 +49,9 @@ Double_t b = 4;
     h3->GetYaxis()->SetTitle("Event");
     h3->GetXaxis()->SetTitle("Energy, MeV");
 	h3->SetTitle("Energy");
-    // h3->Draw();
+    h3->Draw();
 
     // h2->Draw("colz");
-        h2->Draw("colz");
+        // h2->Draw("colz");
     c->Update();
 }

@@ -48,18 +48,18 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
   G4String par = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-  if (par != "gamma")
+  if (par != "gamma" )
   {
     return false;
   }
-  
-  G4double edep = aStep->GetTotalEnergyDeposit();
+
+
+ //G4double edep = aStep->GetTotalEnergyDeposit();
   G4double En = aStep->GetPreStepPoint()->GetKineticEnergy();
 
   
   // G4cout << "Particle: " << par << G4endl;
   // G4cout << "Energy: " << En << G4endl;
-
   TrackerHit* newHit = new TrackerHit();
   auto touchable = aStep->GetPreStepPoint()->GetTouchable();
   auto transform = touchable->GetHistory()->GetTopTransform();
@@ -69,6 +69,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   newHit->SetPos (
     localPos
     );
+  G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
   fHitsCollection->insert( newHit );
 

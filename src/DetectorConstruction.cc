@@ -178,7 +178,7 @@ namespace project
    G4Box *solidbox = new G4Box("Box", 2*mm, 10 * cm, 10 * cm); // 
     Box = new G4LogicalVolume(solidbox, Vacuum, "Box");               // detector
     new G4PVPlacement(rot,
-                      G4ThreeVector(0, 0, 8.7*m - 10*cm),
+                      G4ThreeVector(0, 0, 8.7*m -2*mm),
                       Box,
                       "Box",
                       cylinder,

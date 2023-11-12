@@ -1,0 +1,30 @@
+можно создать несколько виртуальных детекторов, каждый из которых будет записывать свои данные в отдельный ROOT-файл. Для этого можно использовать множество экземпляров G4MultiFunctionalDetector, каждый из которых будет привязан к своему логическому объему и будет записывать данные в свой собственный ROOT-файл.
+
+Примерно такой код можно использовать для создания нескольких виртуальных детекторов и записи данных в различные ROOT-файлы:
+// Создание экземпляров G4MultiFunctionalDetector
+G4MultiFunctionalDetector* detector1 = new G4MultiFunctionalDetector("detector1");
+G4MultiFunctionalDetector* detector2 = new G4MultiFunctionalDetector("detector2");
+
+// Определение чувствительных областей и реагирующих процессов для каждого детектора
+// ...
+
+// Прикрепление детекторов к логическим объемам
+G4LogicalVolume* logicalVolume1 = ...; // определение логического объема 1
+G4LogicalVolume* logicalVolume2 = ...; // определение логического объема 2
+G4SDManager* sdManager = G4SDManager::GetSDMpointer();
+sdManager->AddNewDetector(detector1);
+sdManager->AddNewDetector(detector2);
+logicalVolume1->SetSensitiveDetector(detector1);
+logicalVolume2->SetSensitiveDetector(detector2);
+
+// Создание файлов для записи данных
+G4HCofThisEvent* HCE = new G4HCofThisEvent();
+G4RunManager* runManager = G4RunManager::GetRunManager();
+G4AnalysisManager* analysisManager1 = G4AnalysisManager::Instance("detector1_output");
+G4AnalysisManager* analysisManager2 = G4AnalysisManager::Instance("detector2_output");
+
+// Привязка анализаторов к детекторам
+// ...
+
+// Запись данных в соответствующие ROOT-файлы
+// ...
