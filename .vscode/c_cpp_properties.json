@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/soft/geant4_v11/include/Geant4",
-                "/home/Kirill/geant4/install/include/Geant4"
+                "/home/Kirill/geant4/install/include/Geant4",
+                "/usr/local/root/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

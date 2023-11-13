@@ -3,7 +3,7 @@
 #include "G4GenericMessenger.hh"
 #include "G4SystemOfUnits.hh"
 #include "globals.hh"
-
+#include "G4Track.hh"
 namespace project
 {
 
@@ -24,8 +24,8 @@ namespace project
 
   void MagneticField::GetFieldValue(const G4double point[4], double *bField) const
   {
-    G4double Hm = 9882.18390*gauss;
-    G4double k = Hm/(95.);
+    G4double Hm = 2300*gauss;
+    // G4double k = Hm/(95.);
     // if (std::abs(point[0])<=60.)
     // {
     //   bField[1] = -Hm;
@@ -38,9 +38,32 @@ namespace project
     // }
     // // bField[1] = Hm;
     bField[0] = 0.;
+    // G4Track* track = new G4Track();
+    // auto postition = track->GetPosition().getX();
+    // G4cout << "posx: "<<postition << G4endl;
+    if (point[1] > 0.47*m && point[2] < (0.47+2.3)*m)
+    {
+      bField[1] = -Hm;
+    }else{
+      bField[1] = 0;
+    }
     
+    if (std::abs(point[1])>=4 || std::abs(point[2])>=4)
+    {
+      bField[1] = 0;
+    }else{
+      bField[1] = -Hm;
+    }
+    
+   
+
+      
+    // }
+    // else{
+    //   bField[1] = 0;
+    // }
     bField[2] = 0;
-    bField[1] = -Hm; 
+    
   }
 
   //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -4,4 +4,4 @@
 
 /gps/direction 1 0 0
 /gps/position -10 0 0
-/run/beamOn 500000
+/run/beamOn 1500000

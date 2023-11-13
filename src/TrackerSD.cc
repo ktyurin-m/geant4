@@ -69,7 +69,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   newHit->SetPos (
     localPos
     );
-  G4cout << "localX: " << localPos.getX() << G4endl;
+ // G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
   fHitsCollection->insert( newHit );
 

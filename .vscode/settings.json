@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "*.icc": "cpp",
-        "analysis.C": "cpp"
+        "analysis.C": "cpp",
+        "random": "cpp",
+        "iostream": "cpp"
     }
 }

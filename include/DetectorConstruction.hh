@@ -60,8 +60,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume*  Convertor = nullptr;
     G4LogicalVolume** fLogicChamber = nullptr; // pointer to the logical Chamber
     G4LogicalVolume* Magnet = nullptr;
+    G4LogicalVolume* Magnet_2 = nullptr;
+    G4LogicalVolume* cylinder = nullptr;
     G4LogicalVolume* Gap = nullptr;
-
+    G4LogicalVolume* Tubik1 = nullptr;
+    G4LogicalVolume* worldLV = nullptr;
     G4Material*       Air = nullptr;  // pointer to the target  material
     G4Material*       Vacuum = nullptr;
     // G4Material*       fChamberMaterial = nullptr; // pointer to the chamber material
