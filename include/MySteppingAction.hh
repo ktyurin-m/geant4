@@ -1,6 +1,8 @@
 #include "G4SteppingManager.hh"
 #include "G4Track.hh"
 #include "G4VPhysicalVolume.hh"
+#include <CLHEP/Units/SystemOfUnits.h>
+#include "globals.hh"
 
 class MySteppingAction: public G4UserSteppingAction
 {
@@ -12,11 +14,14 @@ public:
     {
         // get the track of current particle
         G4Track* track = step->GetTrack();
-        
+        G4double x, y, z;
+        x = track->GetPosition().getX();
+        y = track->GetPosition().getY();
+        z = track->GetPosition().getZ();
+
         // check if track is inside your primitive (e.g. a box)
-        G4VPhysicalVolume* volume = track->GetVolume();
-        
-        if(volume->GetName() == "MAGNET_F")
+
+        if(abs(y) > 300 || abs(z) > 300)
         {
             // kill the track
             track->SetTrackStatus(fStopAndKill);

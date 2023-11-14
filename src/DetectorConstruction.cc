@@ -27,6 +27,9 @@
 #include "G4FieldManager.hh"
 #include "G4EqMagElectricField.hh"
 #include "CADMesh.hh"
+#include "G4Mag_SpinEqRhs.hh"
+#include "G4MagIntegratorDriver.hh"
+#include "G4Mag_EqRhs.hh"
 using namespace project;
 
 namespace project
@@ -156,22 +159,22 @@ namespace project
     G4RotationMatrix *rot = new G4RotationMatrix();
     rot->rotateY(90 * deg);
     G4Tubs *tubik1 = new G4Tubs("tubil", 4 * cm, 6 * cm, 8.7* m / 2, 0, 360 * deg);
-    Tubik1 = new G4LogicalVolume(tubik1, Fe, "tubik");
+    Tubik1 = new G4LogicalVolume(tubik1, Fe, "tubik1");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
                       Tubik1,
-                      "tubik",
+                      "tubik1",
                       Boxvac1,
                       false,
                       0,
                       fCheckOverlaps);
 
     G4Tubs *tubik2 = new G4Tubs("tubil", 0, 4 * cm, 2.3 * m / 2, 0, 360 * deg);
-    G4LogicalVolume *Tubik2 = new G4LogicalVolume(tubik2, Vacuum, "tubik");
+    Tubik2 = new G4LogicalVolume(tubik2, Vacuum, "tubik2");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
                       Tubik2,
-                      "tubik",
+                      "tubik2",
                       Magnet_2,
                       false,
                       0,
@@ -256,7 +259,7 @@ namespace project
     //                   2,
     //                   fCheckOverlaps);
 
-    G4double maxStep = 1 * mm;
+    G4double maxStep = 0.5 * mm;
     fStepLimit = new G4UserLimits(maxStep);
     worldLV->SetUserLimits(fStepLimit);
 
@@ -281,12 +284,15 @@ namespace project
     // the field value is not zero.
 
     // MAGNETIC FIELD
+    
     magField = new MagneticField();
     fFieldMgr = new G4FieldManager();
     fFieldMgr->SetDetectorField(magField);
+    // fFieldMgr->SetMinimumEpsilonStep(0.5*mm);
+    // fFieldMgr->SetMaximumEpsilonStep(2*mm);
+    // fFieldMgr->SetDeltaOneStep( 0.5e-3 * mm );
     fFieldMgr->CreateChordFinder(magField);
-    
-    Magnet_2->SetFieldManager(fFieldMgr, false);
+    Tubik2->SetFieldManager(fFieldMgr, true);
 
     // Register the field messenger for deleting
   }

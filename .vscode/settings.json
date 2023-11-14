@@ -3,6 +3,7 @@
         "*.icc": "cpp",
         "analysis.C": "cpp",
         "random": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "new": "cpp"
     }
 }
