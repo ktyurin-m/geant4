@@ -11,7 +11,7 @@
 
 void analysis()
 {
-    TFile *f = new TFile("out4.root");
+    TFile *f = new TFile("out.root");
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -24,7 +24,7 @@ void analysis()
 
     TH2F *h1 = new TH2F("h1", "h1", 100, -60, 60, 100, 0, 1900);
     TH2F *h2 = new TH2F("h2", "h2", 50, -60, 60, 50, -60, 60);
-    TH1F *h3 = new TH1F("HistOfEnergy", "HistOfEnergy", 500, 0, 5000); // energy
+    TH1F *h3 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // energy
     // TH1F *h4  = new TH1F("h3","h3",300, -100,100) ;
     Int_t ent = t->GetEntries();
     for (Int_t i = 0; i < ent; i++)
