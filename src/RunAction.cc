@@ -25,6 +25,7 @@ RunAction::RunAction()
   analysisManager->CreateNtupleDColumn("y");
   analysisManager->CreateNtupleDColumn("z");
   analysisManager->CreateNtupleDColumn("Energy");
+  analysisManager->CreateNtupleSColumn("Particle");
   analysisManager->FinishNtuple();
 }
 

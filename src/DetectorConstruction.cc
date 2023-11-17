@@ -30,6 +30,7 @@
 #include "G4Mag_SpinEqRhs.hh"
 #include "G4MagIntegratorDriver.hh"
 #include "G4Mag_EqRhs.hh"
+#include "G4SubtractionSolid.hh"
 using namespace project;
 
 namespace project
@@ -135,7 +136,7 @@ namespace project
     // Vacuum box
     G4double length_vac = 8.7 * m;
     G4Box *boxvac1 = new G4Box("vaccuum", length_vac / 2, 2 * m, 2 * m);
-    G4LogicalVolume *Boxvac1 = new G4LogicalVolume(boxvac1, Vacuum, "vacc");
+    G4LogicalVolume *Boxvac1 = new G4LogicalVolume(boxvac1, Air, "vacc");
     new G4PVPlacement(0,
                       G4ThreeVector(length_vac / 2, 0, 0),
                       Boxvac1,
@@ -147,7 +148,20 @@ namespace project
 
     G4double magnet_l = 2.3 * m;
     G4Box *MagnetBox = new G4Box("Magnet_2", magnet_l / 2, 0.9 * m / 2, 0.84 * m / 2);
-    Magnet_2 = new G4LogicalVolume(MagnetBox, Fe, "Magnet_2");
+
+    G4Box* aper = new G4Box("aper", magnet_l / 2, 26*cm/2, 27*cm/2);
+    G4SubtractionSolid* substraction = new G4SubtractionSolid("Box - Aper",MagnetBox, aper);
+    // G4LogicalVolume* Aper = new G4LogicalVolume(aper, Air, "aper");
+    // new G4PVPlacement(0,
+    //                   G4ThreeVector(0, 0, 0),
+    //                   Aper,
+    //                   "MAGNET_F",
+    //                   Boxvac1,
+    //                   false,
+    //                   0,
+    //                   fCheckOverlaps);
+    //-(length_vac / 2 - magnet_l / 2 - 0.47 * m), 0, 0
+    Magnet_2 = new G4LogicalVolume(substraction, Fe, "Magnet_2");
     new G4PVPlacement(0,
                       G4ThreeVector(-(length_vac / 2 - magnet_l / 2 - 0.47 * m), 0, 0),
                       Magnet_2,
@@ -158,7 +172,7 @@ namespace project
                       fCheckOverlaps);
     G4RotationMatrix *rot = new G4RotationMatrix();
     rot->rotateY(90 * deg);
-    G4Tubs *tubik1 = new G4Tubs("tubil", 4 * cm, 6 * cm, 8.7* m / 2, 0, 360 * deg);
+    G4Tubs *tubik1 = new G4Tubs("tubil", 4.5 * cm, 5 * cm, 8.7* m / 2, 0, 360 * deg);
     Tubik1 = new G4LogicalVolume(tubik1, Fe, "tubik1");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
@@ -169,13 +183,13 @@ namespace project
                       0,
                       fCheckOverlaps);
 
-    G4Tubs *tubik2 = new G4Tubs("tubil", 0, 4 * cm, 2.3 * m / 2, 0, 360 * deg);
+    G4Tubs *tubik2 = new G4Tubs("tubil", 0, 4.5 * cm, 8.7 * m / 2, 0, 360 * deg);
     Tubik2 = new G4LogicalVolume(tubik2, Vacuum, "tubik2");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
                       Tubik2,
                       "tubik2",
-                      Magnet_2,
+                      Boxvac1,
                       false,
                       0,
                       fCheckOverlaps);

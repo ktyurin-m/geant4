@@ -21,7 +21,7 @@ public:
 
         // check if track is inside your primitive (e.g. a box)
 
-        if(abs(y) > 300 || abs(z) > 300)
+        if(abs(y) > 350 || abs(z) > 350)
         {
             // kill the track
             track->SetTrackStatus(fStopAndKill);

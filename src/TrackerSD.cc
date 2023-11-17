@@ -48,11 +48,6 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
   G4String par = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-  if (par != "gamma" )
-  {
-    return false;
-  }
-
 
  //G4double edep = aStep->GetTotalEnergyDeposit();
   G4double En = aStep->GetPreStepPoint()->GetKineticEnergy();
@@ -69,6 +64,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   newHit->SetPos (
     localPos
     );
+    newHit->SetParticle(par);
  // G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
   fHitsCollection->insert( newHit );
@@ -88,6 +84,7 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
       analysisManager->FillNtupleDColumn(1, (*fHitsCollection)[0]->GetPos().getY());
       analysisManager->FillNtupleDColumn(2, (*fHitsCollection)[0]->GetPos().getZ());  
       analysisManager->FillNtupleDColumn(3, (*fHitsCollection)[0]->GetEdep());
+      analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[0]->GetParticle());
       analysisManager->AddNtupleRow();
   }
 

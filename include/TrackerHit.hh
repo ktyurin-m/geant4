@@ -43,17 +43,20 @@ class TrackerHit : public G4VHit
     void SetEdep     (G4double de)      { fEdep = de; };
     void SetPos      (G4ThreeVector xyz){ fPos = xyz; };
     void AddEdep     (G4double de)      { fEdep += de;};
+    void SetParticle (G4String par)     { fPar = par;};
     // Get methods
     G4int GetTrackID() const     { return fTrackID; };
     G4int GetChamberNb() const   { return fChamberNb; };
     G4double GetEdep() const     { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
+    G4String GetParticle()       { return fPar;};
 
   private:
     G4int         fTrackID = -1;
     G4int         fChamberNb = -1;
     G4double      fEdep = 0.;
     G4ThreeVector fPos;
+    G4String      fPar;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
