@@ -25,25 +25,24 @@ void analysis()
     t->SetBranchAddress("Particle", Particle);
 
     TH2F *h1 = new TH2F("h1", "h1", 100, -60, 60, 100, 0, 1900);
-    TH2F *h2 = new TH2F("h2", "h2", 50, -60, 60, 50, -60, 60);
-    TH1F *h3 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // energy
+    TH2F *h2 = new TH2F("h2", "h2", 100, -60, 60, 100, -60, 60);
+    TH1F *h3 = new TH1F("HistOfEnergy", "HistOfEnergy", 500, 0, 5000); // energy
     // TH1F *h4  = new TH1F("h3","h3",300, -100,100) ;
     Int_t ent = t->GetEntries();
     for (Int_t i = 0; i < ent; i++)
     {
-        t->GetEntry(i);      
-        if (strcmp(Particle, "e+") == 0)
-        {
-            cout << Particle << endl;
-        }
-        
-       
-       
+        t->GetEntry(i);             
         if (x >= -1.1 && x <= -0.9 && strcmp(Particle, "e-") == 0)
         {
-            h1->Fill(z, Energy);
-            h2->Fill(y, z);
-            h3->Fill(Energy);
+            Double_t R = sqrt(pow(z,2) + pow(y,2));
+            if (R < 45)
+            {
+                h1->Fill(z, Energy);
+                h2->Fill(y, z);
+                h3->Fill(Energy);
+            }
+            
+
         }
     }
 
