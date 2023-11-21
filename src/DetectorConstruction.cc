@@ -78,10 +78,10 @@ namespace project
 
     // World
 
-    G4double boxsize = 9 * m;
-    G4GeometryManager::GetInstance()->SetWorldMaximumExtent(boxsize);
-    G4Box *worldS = new G4Box("world",                    // its name
-                              boxsize, boxsize, boxsize); // its size
+    G4double WorldSize = 9 * m;
+    G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WorldSize);
+    G4Box *worldS = new G4Box("world",                          // its name
+                              WorldSize, WorldSize, WorldSize); // its size
 
     worldLV = new G4LogicalVolume(
         worldS,   // its solid
@@ -129,67 +129,68 @@ namespace project
     //         );
     // //----------------------------------------------------------
 
-    // Visualization attributes
-
     // detector
 
-    // Vacuum box
-    G4double length_vac = 8.7 * m;
-    G4Box *boxvac1 = new G4Box("vaccuum", length_vac / 2, 2 * m, 2 * m);
-    G4LogicalVolume *Boxvac1 = new G4LogicalVolume(boxvac1, Air, "vacc");
+    // Space_1
+    G4double length_space = 8.7 * m, width_space = 4 * m, height = 4 * m;
+    G4Box *space_1 = new G4Box("space_1", length_space / 2, width_space / 2, height / 2);
+    G4LogicalVolume *Space_1 = new G4LogicalVolume(space_1, Air, "space_1");
     new G4PVPlacement(0,
-                      G4ThreeVector(length_vac / 2, 0, 0),
-                      Boxvac1,
+                      G4ThreeVector(length_space / 2, 0, 0),
+                      Space_1,
                       "vac",
                       worldLV,
                       false,
                       0,
                       fCheckOverlaps);
-
-    G4double magnet_l = 2.3 * m;
-    G4Box *MagnetBox = new G4Box("Magnet_2", magnet_l / 2, 0.9 * m / 2, 0.84 * m / 2);
-
-    G4Box* aper = new G4Box("aper", magnet_l / 2, 26*cm/2, 27*cm/2);
-    G4SubtractionSolid* substraction = new G4SubtractionSolid("Box - Aper",MagnetBox, aper);
-    // G4LogicalVolume* Aper = new G4LogicalVolume(aper, Air, "aper");
-    // new G4PVPlacement(0,
-    //                   G4ThreeVector(0, 0, 0),
-    //                   Aper,
-    //                   "MAGNET_F",
-    //                   Boxvac1,
-    //                   false,
-    //                   0,
-    //                   fCheckOverlaps);
-    //-(length_vac / 2 - magnet_l / 2 - 0.47 * m), 0, 0
+    //=======================================================================================
+    G4double length_magnet = 2.3 * m, width_magnet = 0.9 * m, height_magnet = 0.84 * m,
+             width_aper = 26 * cm, height_aper = 27 * cm;
+    G4Box *MagnetBox = new G4Box("Magnet_2", length_magnet / 2, width_magnet / 2, height_magnet / 2);
+    G4Box *aper = new G4Box("aper", length_magnet / 2, width_aper / 2, height_aper / 2);
+    G4SubtractionSolid *substraction = new G4SubtractionSolid("Box - Aper", MagnetBox, aper);
     Magnet_2 = new G4LogicalVolume(substraction, Fe, "Magnet_2");
     new G4PVPlacement(0,
-                      G4ThreeVector(-(length_vac / 2 - magnet_l / 2 - 0.47 * m), 0, 0),
+                      G4ThreeVector(-(length_space / 2 - length_magnet / 2 - 0.47 * m), 0, 0),
                       Magnet_2,
-                      "MAGNET_F",
-                      Boxvac1,
-                      false,
-                      0,
-                      fCheckOverlaps);
-    G4RotationMatrix *rot = new G4RotationMatrix();
-    rot->rotateY(90 * deg);
-    G4Tubs *tubik1 = new G4Tubs("tubil", 4.5 * cm, 5 * cm, 8.7* m / 2, 0, 360 * deg);
-    Tubik1 = new G4LogicalVolume(tubik1, Fe, "tubik1");
-    new G4PVPlacement(rot,
-                      G4ThreeVector(0, 0, 0),
-                      Tubik1,
-                      "tubik1",
-                      Boxvac1,
+                      "Magnet_2",
+                      Space_1,
                       false,
                       0,
                       fCheckOverlaps);
 
-    G4Tubs *tubik2 = new G4Tubs("tubil", 0, 4.5 * cm, 8.7 * m / 2, 0, 360 * deg);
-    Tubik2 = new G4LogicalVolume(tubik2, Vacuum, "tubik2");
+    //======================================================================================
+    G4RotationMatrix *rot = new G4RotationMatrix();
+    rot->rotateY(90 * deg);
+    G4Tubs *tube1 = new G4Tubs("tube1", 4.5 * cm, 5 * cm, 8.7 * m / 2, 0, 360 * deg);
+    Tube1 = new G4LogicalVolume(tube1, Fe, "tube1");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
-                      Tubik2,
-                      "tubik2",
-                      Boxvac1,
+                      Tube1,
+                      "tube1",
+                      Space_1,
+                      false,
+                      0,
+                      fCheckOverlaps);
+    //======================================================================================
+    G4Tubs *tube2 = new G4Tubs("tube2", 0, 4.5 * cm, 8.7 * m / 2, 0, 360 * deg);
+    Tube2 = new G4LogicalVolume(tube2, Vacuum, "tube2");
+    new G4PVPlacement(rot,
+                      G4ThreeVector(0, 0, 0),
+                      Tube2,
+                      "tube2",
+                      Space_1,
+                      false,
+                      0,
+                      fCheckOverlaps);
+    //========================================================================================
+    G4Tubs *tube3 = new G4Tubs("tube3", 0, 4.5 * cm, 8.7 * m / 2, 0, 360 * deg);
+    G4LogicalVolume* Tube3 = new G4LogicalVolume(tube3, Vacuum, "tube3");
+    new G4PVPlacement(0,
+                      G4ThreeVector(0, 0, 0),
+                      Tube3,
+                      "tube3",
+                      Tube2,
                       false,
                       0,
                       fCheckOverlaps);
@@ -197,46 +198,47 @@ namespace project
     //====================================================================================================================
     // cylinder = new G4LogicalVolume(mesh1->GetSolid("Cylinder"), Vacuum, "logic", 0, 0, 0); //Вакуумная труба
 
-    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2 + 2 * mm, 0, 0), cylinder, "Staff", Boxvac1, false, 2, fCheckOverlaps);
+    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2 + 2 * mm, 0, 0), cylinder, "Staff", Space_1, false, 2, fCheckOverlaps);
 
     // auto tubem1 = new G4LogicalVolume(mesh1->GetSolid("Tube"), Fe, "logic", 0, 0, 0);
-    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2, 0, 0), tubem1, "Staff", Boxvac1, false, 2, fCheckOverlaps);
+    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2, 0, 0), tubem1, "Staff", Space_1, false, 2, fCheckOverlaps);
 
     // auto tubem2 = new G4LogicalVolume(mesh1->GetSolid("Tube"), Fe, "logic", 0, 0, 0);
-    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2, 0, 0), tubem2, "Staff", Boxvac1, false, 2, fCheckOverlaps);
+    // new G4PVPlacement(rot, G4ThreeVector(length_vac / 2, 0, 0), tubem2, "Staff", Space_1, false, 2, fCheckOverlaps);
 
-    G4Box *boxvac2 = new G4Box("vaccuum", 1 * m, 1 * m, 1 * m);
-    G4LogicalVolume *Boxvac2 = new G4LogicalVolume(boxvac2, Vacuum, "vacc");
+    // G4Box *boxvac2 = new G4Box("vaccuum", 1 * m, 1 * m, 1 * m);
+    // G4LogicalVolume *Boxvac2 = new G4LogicalVolume(boxvac2, Vacuum, "vacc");
+    // new G4PVPlacement(0,
+    //                   G4ThreeVector(-1 * m, 0, 0),
+    //                   Boxvac2,
+    //                   "vac",
+    //                   worldLV,
+    //                   false,
+    //                   0,
+    //                   fCheckOverlaps);
+    //===================================================================================
+    G4Box *detector1 = new G4Box("Box", 2 * mm, 6 * cm, 6 * cm);     //
+    Detector1 = new G4LogicalVolume(detector1, Vacuum, "Detector1"); // detector
     new G4PVPlacement(0,
-                      G4ThreeVector(-1 * m, 0, 0),
-                      Boxvac2,
-                      "vac",
-                      worldLV,
-                      false,
-                      0,
-                      fCheckOverlaps);
-    G4Box *solidbox = new G4Box("Box", 2 * mm, 6 * cm, 6 * cm); //
-    Box = new G4LogicalVolume(solidbox, Vacuum, "Box");           // detector
-    new G4PVPlacement(0,
-                      G4ThreeVector(8.7*m + 1*mm, 0, 0),
-                      Box,
-                      "Box",
+                      G4ThreeVector(8.7 * m + 1 * mm, 0, 0),
+                      Detector1,
+                      "Detector1",
                       worldLV,
                       false,
                       3,
                       true);
-    // test
-    G4double l = 1.76 * 0.1 * cm;
-    G4Box *conv = new G4Box("conv", l / 2, 10 * cm, 10 * cm);
-    Convertor = new G4LogicalVolume(conv, Fe, "conv");
-    new G4PVPlacement(0,
-                      G4ThreeVector(1 * m - l / 2, 0, 0),
-                      Convertor,
-                      "conv",
-                      Boxvac2,
-                      false,
-                      2,
-                      true);
+    // // test
+    // G4double l = 1.76 * 0.1 * cm;
+    // G4Box *conv = new G4Box("conv", l / 2, 10 * cm, 10 * cm);
+    // Convertor = new G4LogicalVolume(conv, Fe, "conv");
+    // new G4PVPlacement(0,
+    //                   G4ThreeVector(1 * m - l / 2, 0, 0),
+    //                   Convertor,
+    //                   "conv",
+    //                   Boxvac2,
+    //                   false,
+    //                   2,
+    //                   true);
     //==========================================================================
     // magnit
     // G4double lengthM = 1600 / 2 * mm;
@@ -291,14 +293,14 @@ namespace project
     G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD);
     // Setting aTrackerSD to all logical volumes with the same name
     // of "Chamber_LV".
-    SetSensitiveDetector("Box", aTrackerSD, false);
+    SetSensitiveDetector("Detector1", aTrackerSD, false);
 
     // Create global magnetic field messenger.
     // Uniform magnetic field is then created automatically if
     // the field value is not zero.
 
     // MAGNETIC FIELD
-    
+
     magField = new MagneticField();
     fFieldMgr = new G4FieldManager();
     fFieldMgr->SetDetectorField(magField);
@@ -306,7 +308,7 @@ namespace project
     // fFieldMgr->SetMaximumEpsilonStep(2*mm);
     // fFieldMgr->SetDeltaOneStep( 0.5e-3 * mm );
     fFieldMgr->CreateChordFinder(magField);
-    Tubik2->SetFieldManager(fFieldMgr, true);
+    Magnet_2->SetFieldManager(fFieldMgr, true);
 
     // Register the field messenger for deleting
   }

@@ -25,9 +25,10 @@ namespace project
   void MagneticField::GetFieldValue(const G4double point[4], double *bField) const
   {
     G4double Hm = 10000*gauss;
-    bField[0] = 0.;
+    
     bField[1] = Hm;
-    bField[2] = 0;
+    bField[0] = 0.;
+    bField[2] = 0.;
     
   }
 
