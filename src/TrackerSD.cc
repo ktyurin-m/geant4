@@ -48,7 +48,11 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
   G4String par = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-
+  if (par != "gamma")
+  { 
+    return false;
+  }
+  
  //G4double edep = aStep->GetTotalEnergyDeposit();
   G4double En = aStep->GetPreStepPoint()->GetKineticEnergy();
 
@@ -78,15 +82,17 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
 void TrackerSD::EndOfEvent(G4HCofThisEvent*)
 {
   G4int Hits = fHitsCollection->entries();
-  if (Hits > 0){
+  for (int i = 0; i < Hits; i++)
+  {
       auto analysisManager = G4AnalysisManager::Instance();
-      analysisManager->FillNtupleDColumn(0, (*fHitsCollection)[0]->GetPos().getX());
-      analysisManager->FillNtupleDColumn(1, (*fHitsCollection)[0]->GetPos().getY());
-      analysisManager->FillNtupleDColumn(2, (*fHitsCollection)[0]->GetPos().getZ());  
-      analysisManager->FillNtupleDColumn(3, (*fHitsCollection)[0]->GetEdep());
-      analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[0]->GetParticle());
+      analysisManager->FillNtupleDColumn(0, (*fHitsCollection)[i]->GetPos().getX());
+      analysisManager->FillNtupleDColumn(1, (*fHitsCollection)[i]->GetPos().getY());
+      analysisManager->FillNtupleDColumn(2, (*fHitsCollection)[i]->GetPos().getZ());  
+      analysisManager->FillNtupleDColumn(3, (*fHitsCollection)[i]->GetEdep());
+      analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[i]->GetParticle());
       analysisManager->AddNtupleRow();
   }
+  
 
    
 
