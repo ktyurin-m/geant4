@@ -16,7 +16,7 @@ void analysis()
     char f3[256] = "out3.root";
     char f4[256] = "out4.root";
     char f5[256] = "out5.root";
-    TFile *f = new TFile(f5,"READ");
+    TFile *f = new TFile(f4,"READ");
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -39,7 +39,7 @@ void analysis()
        
         
         t->GetEntry(i);             
-        if (x >= -2.1 && x <= -1.9 && strcmp(Particle, "neutron") == 0)
+        if (x >= -2.1 && x <= -1.9 && strcmp(Particle, "e-") == 0)
         {
             Double_t R = sqrt(pow(z,2) + pow(y,2));
             if (R < 4.5)
@@ -47,7 +47,7 @@ void analysis()
                 h1->Fill(z, Energy);
                 h2->Fill(y, z);
                 h3->Fill(Energy);
-                cout << Energy << endl;
+                // cout << Energy << endl;
         //          if (strcmp(Particle, "gamma") != 0 && strcmp(Particle, "e-") != 0 && strcmp(Particle, "e+") != 0)
         // {
         //     cout << Particle << endl;
@@ -68,12 +68,12 @@ void analysis()
     h3->SetTitle("Energy");
 
     // c->cd(1);
-    h3->Draw();
-    // c->SaveAs("pic2.png");
+    // h3->Draw();
+    // c->SaveAs("pic.png");
     // c->cd(2);
     // h2->Draw("colz");
 
-    // h2->Draw("colz");
+    h2->Draw("colz");
     // h1->Draw("colz");
     c->Update();
 }
