@@ -48,10 +48,10 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
                                      G4TouchableHistory*)
 {
   G4String par = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-  if (par != "gamma")
-  { 
-    return false;
-  }
+  // if (par != "gamma")
+  // { 
+  //   return false;
+  // }
   
  //G4double edep = aStep->GetTotalEnergyDeposit();
   G4double En = aStep->GetPreStepPoint()->GetKineticEnergy();

@@ -5,6 +5,7 @@
         "random": "cpp",
         "iostream": "cpp",
         "new": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "analysis copy.C": "cpp"
     }
 }

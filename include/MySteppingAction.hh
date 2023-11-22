@@ -13,7 +13,12 @@ public:
     virtual void UserSteppingAction(const G4Step* step) 
     {
         // get the track of current particle
-        // G4Track* track = step->GetTrack();
+        G4Track* track = step->GetTrack();
+        if (track->GetVolume()->GetName() == "Magnet_2")
+        {
+            track->SetTrackStatus(fStopAndKill);
+        }
+        
         // G4double x, y, z;
         // x = track->GetPosition().getX();
         // y = track->GetPosition().getY();

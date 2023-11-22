@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "analysis.C": "cpp"
+        "analysis.C": "cpp",
+        "cstring": "cpp",
+        "new": "cpp"
     }
 }
