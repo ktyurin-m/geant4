@@ -11,12 +11,7 @@
 #include <cstring>
 void analysis()
 {
-    char f1[256] = "out1.root";
-    char f2[256] = "out2.root";
-    char f3[256] = "out3.root";
-    char f4[256] = "out4.root";
-    char f5[256] = "out5.root";
-    TFile *f = new TFile(f4,"READ");
+    TFile *f = new TFile("out5.root");
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -30,50 +25,79 @@ void analysis()
     t->SetBranchAddress("Particle", &Particle);
 
     TH2F *h1 = new TH2F("h1", "h1", 100, -60, 60, 100, 0, 1900);
-    TH2F *h2 = new TH2F("h2", "h2", 25, -10, 10, 25, -10, 10);
-    TH1F *h3 = new TH1F("HistOfEnergy", "HistOfEnergy", 500, 0, 5000); // energy
-    // TH1F *h4  = new TH1F("h3","h3",300, -100,100) ;
+
+    TH2F *h2_1 = new TH2F("gamma", "gamma", 30, -5, 5, 30, -5, 5); // gamma
+    TH2F *h2_2 = new TH2F("e-", "e-", 10, -5, 5, 10, -5, 5); // electron
+    TH2F *h2_3 = new TH2F("e+", "e+", 10, -5, 5, 10, -5, 5); // positron
+
+    TH1F *h3_1 = new TH1F("HistOfEnergy", "HistOfEnergy", 200, -60, 60); // energy //gamma
+    TH1F *h3_2 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // electron
+    TH1F *h3_3 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // positron
+    // TH1F *h4  = new TH1F("h3_1","h3_1",300, -100,100) ;
     Int_t ent = t->GetEntries();
     for (Int_t i = 0; i < ent; i++)
     {
-       
-        
-        t->GetEntry(i);             
-        if (x >= -2.1 && x <= -1.9 && strcmp(Particle, "e-") == 0)
+        Double_t R = sqrt(pow(z, 2) + pow(y, 2));
+        if (x >= -2.1 && x <= -1.9 )
         {
-            Double_t R = sqrt(pow(z,2) + pow(y,2));
-            if (R < 4.5)
+            if (strcmp(Particle, "gamma") == 0)
             {
-                h1->Fill(z, Energy);
-                h2->Fill(y, z);
-                h3->Fill(Energy);
-                // cout << Energy << endl;
-        //          if (strcmp(Particle, "gamma") != 0 && strcmp(Particle, "e-") != 0 && strcmp(Particle, "e+") != 0)
-        // {
-        //     cout << Particle << endl;
-        // }
+                h2_1->Fill(y, z);
+                h3_1->Fill(y);
             }
-            
-
+            if (strcmp(Particle, "e-") == 0)
+            {
+                h2_2->Fill(y, z);
+                h3_2->Fill(Energy);
+            }
+            if (strcmp(Particle, "e+") == 0)
+            {
+                h2_3->Fill(y, z);
+                h3_3->Fill(Energy);
+            }
         }
+        t->GetEntry(i);
     }
 
     t->ResetBranchAddresses();
-    TCanvas *c = new TCanvas("En", "En", 1900, 1080);
-    // c->SetLogy();
-    c->SetCrosshair();
-    // c->Divide(2);
-    h3->GetYaxis()->SetTitle("Event");
-    h3->GetXaxis()->SetTitle("Energy, MeV");
-    h3->SetTitle("Energy");
+    TCanvas *c = new TCanvas;
+    c->Divide(3, 2);
+    h3_1->GetYaxis()->SetTitle("Event");
+    h3_1->GetXaxis()->SetTitle("Energy, MeV");
+    h3_1->SetTitle("Energy(gamma)");
+    h3_1->SetFillColor(kGray);
+    c->cd(1);
+    // gPad->SetLogy();
+    h3_1->Draw();
 
-    // c->cd(1);
-    // h3->Draw();
-    // c->SaveAs("pic.png");
+    h3_2->GetYaxis()->SetTitle("Event");
+    h3_2->GetXaxis()->SetTitle("Energy, MeV");
+    h3_2->SetTitle("Energy(e-)");
+    h3_2->SetFillColor(kGray);
+    c->cd(2);
+    gPad->SetLogy();
+    h3_2->Draw();
+
+    h3_3->GetYaxis()->SetTitle("Event");
+    h3_3->GetXaxis()->SetTitle("Energy, MeV");
+    h3_3->SetTitle("Energy(e+)");
+    h3_3->SetFillColor(kGray);
+    c->cd(3);
+    gPad->SetLogy();
+    h3_3->Draw();
+
+    c->cd(4);
+    h2_1->Draw("colz");
+
+    c->cd(5);
+    h2_2->Draw("colz");
+
+    c->cd(6);
+    h2_3->Draw("colz");
     // c->cd(2);
     // h2->Draw("colz");
 
-    h2->Draw("colz");
+    // h2->Draw("colz");
     // h1->Draw("colz");
     c->Update();
 }

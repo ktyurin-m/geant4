@@ -6,6 +6,7 @@
         "iostream": "cpp",
         "new": "cpp",
         "ostream": "cpp",
-        "analysis copy.C": "cpp"
+        "analysis copy.C": "cpp",
+        "cmath": "cpp"
     }
 }
