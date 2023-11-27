@@ -19,17 +19,17 @@ public:
             track->SetTrackStatus(fStopAndKill);
         }
         
-        // G4double x, y, z;
-        // x = track->GetPosition().getX();
-        // y = track->GetPosition().getY();
-        // z = track->GetPosition().getZ();
+        G4double x, y, z;
+        x = track->GetPosition().getX();
+        y = track->GetPosition().getY();
+        z = track->GetPosition().getZ();
 
         // // check if track is inside your primitive (e.g. a box)
-
-        // if(abs(y) > 350 || abs(z) > 350)
-        // {
-        //     // kill the track
-        //     track->SetTrackStatus(fStopAndKill);
-        // }
+        G4double R = sqrt(pow(y,2) + pow(z,2));
+        if(R>350)
+        {
+            // kill the track
+            track->SetTrackStatus(fStopAndKill);
+        }
     }
 };

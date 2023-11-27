@@ -11,7 +11,7 @@
 #include <cstring>
 void analysis()
 {
-    TFile *f = new TFile("out5.root");
+    TFile *f = new TFile("out1.root");
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -26,11 +26,11 @@ void analysis()
 
     TH2F *h1 = new TH2F("h1", "h1", 100, -60, 60, 100, 0, 1900);
 
-    TH2F *h2_1 = new TH2F("gamma", "gamma", 30, -5, 5, 30, -5, 5); // gamma
-    TH2F *h2_2 = new TH2F("e-", "e-", 10, -5, 5, 10, -5, 5); // electron
-    TH2F *h2_3 = new TH2F("e+", "e+", 10, -5, 5, 10, -5, 5); // positron
+    TH2F *h2_1 = new TH2F("gamma", "gamma", 10, -5, 5, 10, -5, 5); // gamma
+    TH2F *h2_2 = new TH2F("e-", "e-", 10, -5, 5, 10, -5, 5);       // electron
+    TH2F *h2_3 = new TH2F("e+", "e+", 10, -5, 5, 10, -5, 5);       // positron
 
-    TH1F *h3_1 = new TH1F("HistOfEnergy", "HistOfEnergy", 200, -60, 60); // energy //gamma
+    TH1F *h3_1 = new TH1F("HistOfEnergy", "HistOfEnergy", 500, 0, 5000); // energy //gamma
     TH1F *h3_2 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // electron
     TH1F *h3_3 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // positron
     // TH1F *h4  = new TH1F("h3_1","h3_1",300, -100,100) ;
@@ -38,12 +38,16 @@ void analysis()
     for (Int_t i = 0; i < ent; i++)
     {
         Double_t R = sqrt(pow(z, 2) + pow(y, 2));
-        if (x >= -2.1 && x <= -1.9 )
+        if (x >= -2.1 && x <= -1.9)
         {
             if (strcmp(Particle, "gamma") == 0)
             {
-                h2_1->Fill(y, z);
-                h3_1->Fill(y);
+                // if (R < 4.5)
+                // {
+                    h2_1->Fill(y, z);
+                // }
+
+                h3_1->Fill(Energy);
             }
             if (strcmp(Particle, "e-") == 0)
             {
@@ -67,7 +71,7 @@ void analysis()
     h3_1->SetTitle("Energy(gamma)");
     h3_1->SetFillColor(kGray);
     c->cd(1);
-    // gPad->SetLogy();
+    gPad->SetLogy();
     h3_1->Draw();
 
     h3_2->GetYaxis()->SetTitle("Event");

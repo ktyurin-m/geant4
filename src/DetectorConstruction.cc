@@ -80,12 +80,12 @@ namespace project
 
     G4double WorldSize = 9 * m;
     G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WorldSize);
-    G4Box *worldS = new G4Box("world",                          // its name
-                              WorldSize, WorldSize, WorldSize); // its size
+    G4Box *worldS = new G4Box("world",                               // its name
+                              10 * WorldSize, WorldSize, WorldSize); // its size
 
     worldLV = new G4LogicalVolume(
         worldS,   // its solid
-        Vacuum,      // its material
+        Air,   // its material
         "World"); // its name
 
     G4VPhysicalVolume *worldPV = new G4PVPlacement(
@@ -101,18 +101,10 @@ namespace project
     auto posFreeCad = G4ThreeVector(470 * mm, -420 * mm, -450 * mm);
     auto mesh = CADMesh::TessellatedMesh::FromOBJ("./testbeam.obj");
     //   //-------------------------------------------------------------
-    //         auto Staff_only = new G4LogicalVolume( mesh->GetSolid("Cut005")
-    //                                          , CONCRETE
-    //                                          , "logic"
-    //                                          , 0, 0, 0
-    //         );
-    //         new G4PVPlacement( 0
-    //                          , posFreeCad
-    //                          , Staff_only
-    //                          , "Staff"
-    //                          , worldLV
-    //                          , false, fCheckOverlaps
-    //         );
+    auto Staff_only = new G4LogicalVolume(mesh->GetSolid("Cut005"), CONCRETE, "logic", 0, 0, 0);
+    new G4PVPlacement(0, posFreeCad, Staff_only, "Staff", worldLV, false, fCheckOverlaps);
+
+    // tube x = 21.49
     // //------------------------------------------------------------------------
 
     //         auto Tube1 = new G4LogicalVolume( mesh->GetSolid("Tube001")
@@ -173,7 +165,7 @@ namespace project
     //======================================================================================
     G4RotationMatrix *rot = new G4RotationMatrix();
     rot->rotateY(90 * deg);
-    G4Tubs *tube1 = new G4Tubs("tube1", 4.5 * cm, 5 * cm, length_magnet/ 2, 0, 360 * deg); //tubes in aper
+    G4Tubs *tube1 = new G4Tubs("tube1", 4.5 * cm, 5 * cm, length_magnet / 2, 0, 360 * deg); // tubes in aper
     Tube1 = new G4LogicalVolume(tube1, Fe, "tube1");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
@@ -184,7 +176,7 @@ namespace project
                       0,
                       fCheckOverlaps);
     //======================================================================================
-    G4Tubs *tube2 = new G4Tubs("tube2", 0, 4.5 * cm, length_magnet/ 2, 0, 360 * deg);
+    G4Tubs *tube2 = new G4Tubs("tube2", 0, 4.5 * cm, length_magnet / 2, 0, 360 * deg);
     Tube2 = new G4LogicalVolume(tube2, Vacuum, "tube2");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
@@ -206,7 +198,7 @@ namespace project
     //                   0,
     //                   fCheckOverlaps);
     G4Tubs *tube4 = new G4Tubs("tube4", 4.5, 5 * cm, length_space / 2, 0, 360 * deg);
-    G4LogicalVolume* Tube4 = new G4LogicalVolume(tube4, Fe, "tube4");
+    G4LogicalVolume *Tube4 = new G4LogicalVolume(tube4, Fe, "tube4");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
                       Tube4,
@@ -216,6 +208,27 @@ namespace project
                       0,
                       fCheckOverlaps);
     // auto mesh1 = CADMesh::TessellatedMesh::FromOBJ("./tube-Tube.obj");
+        //======================================================================================
+    G4Tubs *tubeL = new G4Tubs("tubeL", 31*cm/2, 33/2 * cm, 12.9 / 2*m, 0, 360 * deg);
+    G4LogicalVolume *TubeL = new G4LogicalVolume(tubeL, Fe, "tubeL");
+    new G4PVPlacement(rot,
+                      G4ThreeVector(21.49*m, 0, 0),
+                      TubeL,
+                      "tubeL",
+                      worldLV,
+                      false,
+                      0,
+                      fCheckOverlaps);
+    G4Box *folga = new G4Box("folga", 0.5*mm/2, width_aper / 2, height_aper / 2);
+    auto Folga = new G4LogicalVolume(folga, Fe, "folga");
+    new G4PVPlacement(0,
+                      G4ThreeVector(8.7*m + 0.5*mm/2, 0, 0),
+                      Folga,
+                      "Aper",
+                      worldLV,
+                      false,
+                      0,
+                      fCheckOverlaps);
     //====================================================================================================================
     // cylinder = new G4LogicalVolume(mesh1->GetSolid("Cylinder"), Vacuum, "logic", 0, 0, 0); //Вакуумная труба
 
@@ -241,10 +254,10 @@ namespace project
     G4Box *detector1 = new G4Box("Box", 2 * mm, 6 * cm, 6 * cm);     //
     Detector1 = new G4LogicalVolume(detector1, Vacuum, "Detector1"); // detector
     new G4PVPlacement(0,
-                      G4ThreeVector(8.7*m/2, 0, 0),
+                      G4ThreeVector(27.94*m, 0, 0),
                       Detector1,
                       "Detector1",
-                      Space_1,
+                      worldLV,
                       false,
                       3,
                       true);
@@ -253,7 +266,7 @@ namespace project
     G4Box *conv = new G4Box("conv", l / 2, 10 * cm, 10 * cm);
     Convertor = new G4LogicalVolume(conv, Fe, "conv");
     new G4PVPlacement(0,
-                      G4ThreeVector(1 * m - l / 2 - 1*cm, 0, 0),
+                      G4ThreeVector(1 * m - l / 2 - 1 * cm, 0, 0),
                       Convertor,
                       "conv",
                       Boxvac2,
