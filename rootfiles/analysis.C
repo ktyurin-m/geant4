@@ -9,9 +9,11 @@
 #include <TROOT.h>
 #include <TTree.h>
 #include <cstring>
+#include <TFile.h>
 void analysis()
 {
-    TFile *f = new TFile("out1.root");
+    TFile *f = new TFile("out4.root");
+    std::cout <<"File name: " << f->GetName() << std::endl;
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
     Double_t y;
@@ -44,7 +46,7 @@ void analysis()
             {
                 // if (R < 4.5)
                 // {
-                    h2_1->Fill(y, z);
+                h2_1->Fill(y, z);
                 // }
 
                 h3_1->Fill(Energy);
@@ -89,19 +91,11 @@ void analysis()
     c->cd(3);
     gPad->SetLogy();
     h3_3->Draw();
-
     c->cd(4);
     h2_1->Draw("colz");
-
     c->cd(5);
     h2_2->Draw("colz");
-
     c->cd(6);
     h2_3->Draw("colz");
-    // c->cd(2);
-    // h2->Draw("colz");
-
-    // h2->Draw("colz");
-    // h1->Draw("colz");
     c->Update();
 }

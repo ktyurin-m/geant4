@@ -7,6 +7,12 @@
         "new": "cpp",
         "ostream": "cpp",
         "analysis copy.C": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "HistOfYX.C": "cpp",
+        "path": "cpp",
+        "regex": "cpp",
+        "functional": "cpp",
+        "complex": "cpp",
+        "cstdlib": "cpp"
     }
 }
