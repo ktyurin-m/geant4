@@ -12,7 +12,7 @@
 #include <TFile.h>
 void analysis()
 {
-    TFile *f = new TFile("out4.root");
+    TFile *f = new TFile("out2.root");
     std::cout <<"File name: " << f->GetName() << std::endl;
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;

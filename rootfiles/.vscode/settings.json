@@ -2,6 +2,7 @@
     "files.associations": {
         "analysis.C": "cpp",
         "cstring": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "HistOfYX.C": "cpp"
     }
 }

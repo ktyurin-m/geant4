@@ -81,7 +81,7 @@ namespace project
     G4double WorldSize = 9 * m;
     G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WorldSize);
     G4Box *worldS = new G4Box("world",                               // its name
-                              10 * WorldSize, WorldSize, WorldSize); // its size
+                              4 * WorldSize, WorldSize, WorldSize); // its size
 
     worldLV = new G4LogicalVolume(
         worldS,   // its solid
@@ -98,11 +98,13 @@ namespace project
         0,               // copy number
         fCheckOverlaps); // checking overlaps
 
-    auto posFreeCad = G4ThreeVector(470 * mm, -420 * mm, -450 * mm);
+    auto posFreeCad = G4ThreeVector(470 * mm, -450 * mm, +420 * mm);
     auto mesh = CADMesh::TessellatedMesh::FromOBJ("./testbeam.obj");
     //   //-------------------------------------------------------------
     auto Staff_only = new G4LogicalVolume(mesh->GetSolid("Cut005"), CONCRETE, "logic", 0, 0, 0);
-    new G4PVPlacement(0, posFreeCad, Staff_only, "Staff", worldLV, false, fCheckOverlaps);
+    auto st = new G4RotationMatrix();
+    st->rotateX(90*deg);
+    new G4PVPlacement(st, posFreeCad, Staff_only, "Staff", worldLV, false, fCheckOverlaps);
 
     // tube x = 21.49
     // //------------------------------------------------------------------------
@@ -251,7 +253,7 @@ namespace project
                       0,
                       fCheckOverlaps);
     //===================================================================================
-    G4Box *detector1 = new G4Box("Box", 2 * mm, 6 * cm, 6 * cm);     //
+    G4Box *detector1 = new G4Box("Box", 2 * mm, 20 * cm, 20 * cm);     //
     Detector1 = new G4LogicalVolume(detector1, Vacuum, "Detector1"); // detector
     new G4PVPlacement(0,
                       G4ThreeVector(27.94*m, 0, 0),

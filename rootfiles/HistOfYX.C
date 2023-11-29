@@ -12,7 +12,7 @@
 #include <TFile.h>
 void HistOfYX()
 {
-    TFile *f = new TFile("out1.root");
+    TFile *f = new TFile("out4.root");
     std::cout <<"File name: " << f->GetName() << std::endl;
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
@@ -58,10 +58,18 @@ void HistOfYX()
     c->Divide(3, 1);
     c->cd(1);
     h2_1->SetTitle("Hits");
+    h2_1->SetYTitle("y");
+    h2_1->SetXTitle("z");
     h2_1->Draw("colz");
+
     c->cd(2);
+    h3_1->SetXTitle("y");
+    h3_1->SetYTitle("Event");
     h3_1->Draw();
+
     c->cd(3);
+    h3_2->SetXTitle("z");
+    h3_2->SetYTitle("Event");
     h3_2->Draw();
     c->Update();
     
