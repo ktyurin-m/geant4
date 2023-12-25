@@ -4,7 +4,7 @@ graph->Draw("APL"); // рисование графика
 TLatex latex;
 
 graph->GetXaxis()->SetTitle("#sigma, mm"); // название оси X
-graph->GetYaxis()->SetTitle("E, MeV"); // название оси Y
+graph->GetYaxis()->SetTitle("E_{1}, MeV"); // название оси Y
 graph->SetMarkerStyle(20);
 gPad->SetGrid(); // включение сетки
 gPad->Modified(); // обновление рисунка

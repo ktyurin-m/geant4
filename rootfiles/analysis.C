@@ -12,7 +12,7 @@
 #include <TFile.h>
 void analysis()
 {
-    TFile *f = new TFile("out2.root");
+    TFile *f = new TFile("out3.root");
     std::cout <<"File name: " << f->GetName() << std::endl;
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
@@ -32,15 +32,16 @@ void analysis()
     TH2F *h2_2 = new TH2F("e-", "e-", 10, -5, 5, 10, -5, 5);       // electron
     TH2F *h2_3 = new TH2F("e+", "e+", 10, -5, 5, 10, -5, 5);       // positron
 
-    TH1F *h3_1 = new TH1F("HistOfEnergy", "HistOfEnergy", 500, 0, 5000); // energy //gamma
+    TH1F *h3_1 = new TH1F("HistOfEnergy", "HistOfEnergy", 200, 0, 0.001); // energy //gamma
     TH1F *h3_2 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // electron
     TH1F *h3_3 = new TH1F("HistOfEnergy", "HistOfEnergy", 100, 0, 5000); // positron
     // TH1F *h4  = new TH1F("h3_1","h3_1",300, -100,100) ;
     Int_t ent = t->GetEntries();
     for (Int_t i = 0; i < ent; i++)
     {
+        t->GetEntry(i);
         Double_t R = sqrt(pow(z, 2) + pow(y, 2));
-        if (x >= -2.1 && x <= -1.9)
+        if (x >= -2.1 && x <= -1.9 && R < 15)
         {
             if (strcmp(Particle, "gamma") == 0)
             {
@@ -48,8 +49,8 @@ void analysis()
                 // {
                 h2_1->Fill(y, z);
                 // }
-
-                h3_1->Fill(Energy);
+                double radian = std::atan(y*pow(10,-3)/27.5);
+                h3_1->Fill(radian);
             }
             if (strcmp(Particle, "e-") == 0)
             {
@@ -62,7 +63,7 @@ void analysis()
                 h3_3->Fill(Energy);
             }
         }
-        t->GetEntry(i);
+        
     }
 
     t->ResetBranchAddresses();
