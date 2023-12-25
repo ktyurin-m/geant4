@@ -13,6 +13,7 @@
         "regex": "cpp",
         "functional": "cpp",
         "complex": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "drawGraphFromDataFile.C": "cpp"
     }
 }
