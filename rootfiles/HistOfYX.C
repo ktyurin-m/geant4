@@ -12,7 +12,7 @@
 #include <TFile.h>
 void HistOfYX()
 {
-    TFile *f = new TFile("new/out.root");
+    TFile *f = new TFile("../include/out1.root");
     std::cout <<"File name: " << f->GetName() << std::endl;
     TTree *t = (TTree *)f->Get("Data");
     Double_t z;
@@ -40,7 +40,7 @@ void HistOfYX()
     {
         t->GetEntry(i);
         Double_t R = sqrt(pow(z, 2) + pow(y, 2));
-        if (x >= -2.1 && x <= -1.9)
+        if (x >= -2.1 && x <= -1.9 && R < 150)
         {
             if (strcmp(Particle, "gamma") == 0)
             {
@@ -62,7 +62,7 @@ void HistOfYX()
     c->cd(1);
     h2_1->SetTitle("Hits");
     h2_1->SetYTitle("y");
-    h2_1->SetXTitle("z");
+    h2_1->SetXTitle("x");
     h2_1->Draw("colz");
 
     c->cd(2);
