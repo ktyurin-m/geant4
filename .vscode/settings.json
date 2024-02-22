@@ -14,6 +14,7 @@
         "functional": "cpp",
         "complex": "cpp",
         "cstdlib": "cpp",
-        "drawGraphFromDataFile.C": "cpp"
+        "drawGraphFromDataFile.C": "cpp",
+        "_tess": "cpp"
     }
 }

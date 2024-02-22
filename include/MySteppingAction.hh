@@ -13,23 +13,24 @@ public:
     virtual void UserSteppingAction(const G4Step* step) 
     {
         // get the track of current particle
-        // G4Track* track = step->GetTrack();
+        G4Track* track = step->GetTrack();
         // if (track->GetVolume()->GetName() == "Magnet_2")
         // {
         //     track->SetTrackStatus(fStopAndKill);
         // }
         
-        // G4double x, y, z;
-        // x = track->GetPosition().getX();
-        // y = track->GetPosition().getY();
-        // z = track->GetPosition().getZ();
+        G4double x, y, z;
+        x = track->GetPosition().getX();
+        y = track->GetPosition().getY();
+        z = track->GetPosition().getZ();
 
         // // // check if track is inside your primitive (e.g. a box)
-        // G4double R = sqrt(pow(y,2) + pow(z,2));
-        // if(R>3500)
-        // {
-        //     // kill the track
-        //     track->SetTrackStatus(fStopAndKill);
-        // }
+        G4double R = sqrt(pow(y,2) + pow(z,2));
+        if(R>2*500)
+        {
+            // kill the track
+        G4cout << "y: " << y <<", z: " << z<< G4endl;
+           track->SetTrackStatus(fStopAndKill);
+        }
     }
 };

@@ -60,7 +60,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume*  Convertor = nullptr;
     G4LogicalVolume** fLogicChamber = nullptr; // pointer to the logical Chamber
     G4LogicalVolume* Magnet = nullptr;
-    G4LogicalVolume* Magnet_2 = nullptr;
+    G4LogicalVolume* R_Magnet_VEPP4 = nullptr;
     G4LogicalVolume* cylinder = nullptr;
     G4LogicalVolume* Gap = nullptr;
     G4LogicalVolume* Tube1 = nullptr;

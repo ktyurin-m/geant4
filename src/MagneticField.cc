@@ -26,7 +26,7 @@ namespace project
   {
     G4double Hm = 10000*gauss/2;
     
-    bField[1] = Hm;
+    bField[1] = -Hm;
     bField[0] = 0.;
     bField[2] = 0.;
     
