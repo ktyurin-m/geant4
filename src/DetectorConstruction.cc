@@ -170,7 +170,7 @@ namespace project
                       0,
                       fCheckOverlaps);
     //=============================================================================================
-    G4Tubs *tube4 = new G4Tubs("tube4", 4.5, 5 * cm, length_space / 2, 0, 360 * deg);
+    G4Tubs *tube4 = new G4Tubs("tube4", 4.5 * cm, 5 * cm, length_space / 2, 0, 360 * deg);
     G4LogicalVolume *Tube4 = new G4LogicalVolume(tube4, Fe, "tube4");
     new G4PVPlacement(rot,
                       G4ThreeVector(0, 0, 0),
@@ -214,10 +214,10 @@ namespace project
                       0,
                       fCheckOverlaps);
     //===================================================================================
-    G4Box *detector1 = new G4Box("Box", 2 * mm, 20 * cm, 20 * cm);     //
+    G4Box *detector1 = new G4Box("Box", 2 * mm, 4 * cm, 4 * cm);     //
     Detector1 = new G4LogicalVolume(detector1, Vacuum, "Detector1"); // detector
     new G4PVPlacement(0,
-                      G4ThreeVector(27.94*m, 0, 0),
+                      G4ThreeVector(27.94*m + 200*mm + 5*mm, 0, 0),
                       Detector1,
                       "Detector1",
                       worldLV,
@@ -233,6 +233,19 @@ namespace project
                       Convertor,
                       "conv",
                       Boxvac2,
+                      false,
+                      2,
+                      true);
+
+    //==========================================================================
+    G4double conv_m_l = 1.76 * 0.4 * cm;
+    G4Box *conv_mish = new G4Box("convers_mishen", conv_m_l / 2, 4 * cm, 4 * cm);
+    G4LogicalVolume* Conver_mish = new G4LogicalVolume(conv_mish, Fe, "convers_mishen");
+    new G4PVPlacement(0,
+                      G4ThreeVector(27.94*m + 200*mm, 0, 0),
+                      Conver_mish,
+                      "convers_mishen",
+                      worldLV,
                       false,
                       2,
                       true);
