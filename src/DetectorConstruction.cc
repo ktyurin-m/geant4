@@ -225,16 +225,7 @@ namespace project
                       3,
                       true);
     //=========================================================================================
-    G4Box *detector2 = new G4Box("Box", 2 * mm, 0.5 * m, 0.5 * m);     //
-    Detector2 = new G4LogicalVolume(detector2, Vacuum, "Detector2"); // detector
-    new G4PVPlacement(0,
-                      G4ThreeVector(27.94*m + 4*m, 200*mm, 0),
-                      Detector2,
-                      "Detector2",
-                      worldLV,
-                      false,
-                      3,
-                      true);
+
     // // convertor
     G4double X0 = 1.76 * 0.1 * cm;
     G4Box *conv = new G4Box("conv", X0 / 2, 10 * cm, 10 * cm);
@@ -262,40 +253,56 @@ namespace project
                       true);
     //==========================================================================
     // magnit
-    // G4double lengthM = 1600 / 2 * mm;
-    // G4double widthM = 500 / 2 * mm;
-    // G4double heightM = 280 / 2 * mm;
+    G4RotationMatrix *rot2 = new G4RotationMatrix();
+    rot2->rotateY(-60* deg);
+    G4double lengthM = 1600 / 2 * mm;
+    G4double widthM = 500 / 2 * mm;
+    G4double heightM = 280 / 2 * mm;
 
-    // G4Box *magnet = new G4Box("Box1", widthM, heightM, lengthM);
+    G4Box *magnet = new G4Box("Box1", widthM, heightM, lengthM);
 
-    // Magnet = new G4LogicalVolume(magnet, Fe, "Box1");
+    Magnet = new G4LogicalVolume(magnet, Fe, "Box1");
 
-    // new G4PVPlacement(0,
-    //                   G4ThreeVector(0, 0, 2 * m),
-    //                   Magnet,
-    //                   "Box1",
-    //                   worldLV,
-    //                   false,
-    //                   0,
-    //                   fCheckOverlaps);
+    new G4PVPlacement(rot2,
+                      G4ThreeVector(27.94*m + 2*m, 0, 30*cm),
+                      Magnet,
+                      "Box1",
+                      worldLV,
+                      false,
+                      0,
+                      fCheckOverlaps);
 
-    // // gap
-    // G4double lengthG = 1600 / 2 * mm;
-    // G4double widthG = 310 / 2 * mm;
-    // G4double heightG = 20 / 2 * mm;
-    // G4Box *gap = new G4Box("Box2", widthG, heightG, lengthG + 1 * mm);
+    // gap
+    G4double lengthG = 1600 / 2 * mm;
+    G4double widthG = 310 / 2 * mm;
+    G4double heightG = 20 / 2 * mm;
+    G4Box *gap = new G4Box("Box2", widthG, heightG, lengthG + 1 * mm);
 
-    // Gap = new G4LogicalVolume(gap, Air, "Box2");
+    Gap = new G4LogicalVolume(gap, Air, "Box2");
 
-    // new G4PVPlacement(0,
-    //                   G4ThreeVector(0, 0, 2 * m),
-    //                   Gap,
-    //                   "Box2",
-    //                   worldLV,
-    //                   false,
-    //                   2,
-    //                   fCheckOverlaps);
+    new G4PVPlacement(rot2,
+                      G4ThreeVector(27.94*m + 2*m, 0, 30*cm),
+                      Gap,
+                      "Box2",
+                      worldLV,
+                      false,
+                      2,
+                      fCheckOverlaps);
 
+    G4RotationMatrix *rot3 = new G4RotationMatrix();
+    rot3->rotateY(30* deg);
+
+    G4Box *detector2 = new G4Box("Box", 2 * mm, 0.5 * m, 0.5 * m);     //
+    Detector2 = new G4LogicalVolume(detector2, Vacuum, "Detector2"); // detector
+    new G4PVPlacement(rot3,
+                      G4ThreeVector(27.94*m + 5*m, 0, 2*m),
+                      Detector2,
+                      "Detector2",
+                      worldLV,
+                      false,
+                      3,
+                      true);
+    
     G4double maxStep = 0.5 * mm;
     fStepLimit = new G4UserLimits(maxStep);
     worldLV->SetUserLimits(fStepLimit);
@@ -327,6 +334,7 @@ namespace project
     fFieldMgr->SetDetectorField(magField);
 
     fFieldMgr->CreateChordFinder(magField);
+    Gap->SetFieldManager(fFieldMgr,true);
     Aper->SetFieldManager(fFieldMgr, true);
     // Tube1->SetFieldManager(fFieldMgr, true);
     // Tube2->SetFieldManager(fFieldMgr, true);

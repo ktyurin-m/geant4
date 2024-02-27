@@ -26,10 +26,10 @@ public:
 
         // // // check if track is inside your primitive (e.g. a box)
         G4double R = sqrt(pow(y,2) + pow(z,2));
-        if(R>2*500)
+        if(R>2*500 && x < 27000)
         {
             // kill the track
-        G4cout << "y: " << y <<", z: " << z<< G4endl;
+        // G4cout << "y: " << y <<", z: " << z<< G4endl;
            track->SetTrackStatus(fStopAndKill);
         }
     }
