@@ -214,12 +214,23 @@ namespace project
                       0,
                       fCheckOverlaps);
     //===================================================================================
-    G4Box *detector1 = new G4Box("Box", 2 * mm, 4 * cm, 4 * cm);     //
+    G4Box *detector1 = new G4Box("Box", 2 * mm, 0.5 * m, 0.5 * m);     //
     Detector1 = new G4LogicalVolume(detector1, Vacuum, "Detector1"); // detector
     new G4PVPlacement(0,
-                      G4ThreeVector(27.94*m + 200*mm + 5*mm, 0, 0),
+                      G4ThreeVector(27.94*m + 0.5*m, 0, 0),
                       Detector1,
                       "Detector1",
+                      worldLV,
+                      false,
+                      3,
+                      true);
+    //=========================================================================================
+    G4Box *detector2 = new G4Box("Box", 2 * mm, 0.5 * m, 0.5 * m);     //
+    Detector2 = new G4LogicalVolume(detector2, Vacuum, "Detector2"); // detector
+    new G4PVPlacement(0,
+                      G4ThreeVector(27.94*m + 4*m, 200*mm, 0),
+                      Detector2,
+                      "Detector2",
                       worldLV,
                       false,
                       3,
@@ -239,10 +250,10 @@ namespace project
 
     //==========================================================================
     G4double conv_m_l = 1.76 * 0.4 * cm;
-    G4Box *conv_mish = new G4Box("convers_mishen", conv_m_l / 2, 4 * cm, 4 * cm);
+    G4Box *conv_mish = new G4Box("convers_mishen", conv_m_l / 2, 1 * cm/2, 1 * cm/2);
     G4LogicalVolume* Conver_mish = new G4LogicalVolume(conv_mish, Fe, "convers_mishen");
     new G4PVPlacement(0,
-                      G4ThreeVector(27.94*m + 200*mm, 0, 0),
+                      G4ThreeVector(27.94*m + 0.2*m, 0, 0),
                       Conver_mish,
                       "convers_mishen",
                       worldLV,
@@ -297,11 +308,18 @@ namespace project
   void DetectorConstruction::ConstructSDandField()
   {
     // Sensitive detectors
-    G4String trackerChamberSDname = "/TrackerChamberSD";
-    TrackerSD *aTrackerSD = new TrackerSD(trackerChamberSDname,
+    G4String detector_1 = "/det1";
+    TrackerSD *aTrackerSD1 = new TrackerSD(detector_1,
                                           "TrackerHitsCollection");
-    G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD);
-    SetSensitiveDetector("Detector1", aTrackerSD, false);
+    G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD1);
+    SetSensitiveDetector("Detector1", aTrackerSD1, false);
+
+    G4String detector_2 = "/det2";
+    TrackerSD *aTrackerSD2 = new TrackerSD(detector_2,
+                                          "TrackerHitsCollection");
+    G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD2);
+    SetSensitiveDetector("Detector2", aTrackerSD2, false);
+    
 
     // MAGNETIC FIELD
     magField = new MagneticField();

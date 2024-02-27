@@ -34,7 +34,7 @@ void TrackerSD::Initialize(G4HCofThisEvent* hce)
 
   fHitsCollection
     = new TrackerHitsCollection(SensitiveDetectorName, collectionName[0]);
-
+  G4cout << "SensDetName: " << SensitiveDetectorName << G4endl;
   // Add this collection in hce
 
   G4int hcID
@@ -71,8 +71,10 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
     newHit->SetParticle(par);
  // G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
+  // newHit->SetNameDetector()
   fHitsCollection->insert( newHit );
 
+  // G4cout << "NAME det: "<< fHitsCollection->GetSDname() << G4endl; 
   // newHit->AddEdep(edep);
   return true;
 }
@@ -90,6 +92,7 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
       analysisManager->FillNtupleDColumn(2, (*fHitsCollection)[i]->GetPos().getZ());  
       analysisManager->FillNtupleDColumn(3, (*fHitsCollection)[i]->GetEdep());
       analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[i]->GetParticle());
+      analysisManager->FillNtupleSColumn(5, SensitiveDetectorName);
       analysisManager->AddNtupleRow();
   }
   
