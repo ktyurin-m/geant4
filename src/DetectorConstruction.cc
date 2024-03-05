@@ -6,6 +6,7 @@
 #include "G4NistManager.hh"
 #include "G4SDManager.hh"
 #include "MagneticField.hh"
+#include "MagneticField_2.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "G4LogicalVolume.hh"
@@ -254,7 +255,7 @@ namespace project
     //==========================================================================
     // magnit
     G4RotationMatrix *rot2 = new G4RotationMatrix();
-    rot2->rotateY(-60* deg);
+    rot2->rotateY(-73.4* deg);
     G4double lengthM = 1600 / 2 * mm;
     G4double widthM = 500 / 2 * mm;
     G4double heightM = 280 / 2 * mm;
@@ -264,7 +265,7 @@ namespace project
     Magnet = new G4LogicalVolume(magnet, Fe, "Box1");
 
     new G4PVPlacement(rot2,
-                      G4ThreeVector(27.94*m + 2*m, 0, 30*cm),
+                      G4ThreeVector(27.94*m + 2*m, 0, 228.55*mm - 69.28*mm),
                       Magnet,
                       "Box1",
                       worldLV,
@@ -281,7 +282,7 @@ namespace project
     Gap = new G4LogicalVolume(gap, Air, "Box2");
 
     new G4PVPlacement(rot2,
-                      G4ThreeVector(27.94*m + 2*m, 0, 30*cm),
+                      G4ThreeVector(27.94*m + 2*m, 0, 228.55*mm - 69.28*mm),
                       Gap,
                       "Box2",
                       worldLV,
@@ -290,12 +291,12 @@ namespace project
                       fCheckOverlaps);
 
     G4RotationMatrix *rot3 = new G4RotationMatrix();
-    rot3->rotateY(30* deg);
+    rot3->rotateY(33.2* deg);
 
     G4Box *detector2 = new G4Box("Box", 2 * mm, 0.5 * m, 0.5 * m);     //
     Detector2 = new G4LogicalVolume(detector2, Vacuum, "Detector2"); // detector
     new G4PVPlacement(rot3,
-                      G4ThreeVector(27.94*m + 5*m, 0, 2*m),
+                      G4ThreeVector(27.94*m +2*m + 4*m, 0, 2.61*m - 25.55*mm),
                       Detector2,
                       "Detector2",
                       worldLV,

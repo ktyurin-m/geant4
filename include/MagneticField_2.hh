@@ -1,5 +1,5 @@
-#ifndef B5MagneticField_H
-#define B5MagneticField_H 1
+#ifndef B5MagneticField_2_H
+#define B5MagneticField_2_H 1
 
 #include "globals.hh"
 #include "G4MagneticField.hh"
