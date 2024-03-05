@@ -58,6 +58,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume*  fLogicTarget = nullptr;  // pointer to the logical Target
     G4LogicalVolume*  Detector1 = nullptr;
     G4LogicalVolume*  Detector2 = nullptr;
+    G4LogicalVolume*  Triger = nullptr;
     G4LogicalVolume*  Convertor = nullptr;
     G4LogicalVolume** fLogicChamber = nullptr; // pointer to the logical Chamber
     G4LogicalVolume* Magnet = nullptr;

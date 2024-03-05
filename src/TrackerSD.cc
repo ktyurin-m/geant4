@@ -61,6 +61,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   // G4cout << "Energy: " << En << G4endl;
   TrackerHit* newHit = new TrackerHit();
   auto touchable = aStep->GetPreStepPoint()->GetTouchable();
+  auto id = aStep->GetTrack()->GetTrackID();
   auto transform = touchable->GetHistory()->GetTopTransform();
   auto worldPos = aStep->GetPreStepPoint()->GetPosition();
   auto localPos
@@ -71,6 +72,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
     newHit->SetParticle(par);
  // G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
+  newHit->SetTrackID(id);
   // newHit->SetNameDetector()
   fHitsCollection->insert( newHit );
 
@@ -93,6 +95,7 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
       analysisManager->FillNtupleDColumn(3, (*fHitsCollection)[i]->GetEdep());
       analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[i]->GetParticle());
       analysisManager->FillNtupleSColumn(5, SensitiveDetectorName);
+      analysisManager->FillNtupleIColumn(6, (*fHitsCollection)[i]->GetTrackID());
       analysisManager->AddNtupleRow();
   }
   

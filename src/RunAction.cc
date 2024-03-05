@@ -27,6 +27,7 @@ RunAction::RunAction()
   analysisManager->CreateNtupleDColumn("Energy");
   analysisManager->CreateNtupleSColumn("Particle");
   analysisManager->CreateNtupleSColumn("Detector");
+  analysisManager->CreateNtupleIColumn("ID");
   analysisManager->FinishNtuple();
 }
 

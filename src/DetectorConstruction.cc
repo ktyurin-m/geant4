@@ -303,7 +303,19 @@ namespace project
                       false,
                       3,
                       true);
-    
+    G4RotationMatrix *rot4 = new G4RotationMatrix();
+    rot4->rotateY(90*deg - 73.94*deg);
+    G4Box *triger = new G4Box("Triger", 2*mm, 30*mm/2, 15*mm/2);
+    Triger = new G4LogicalVolume(triger, Vacuum, "Triger");
+    new G4PVPlacement(rot4,
+                      G4ThreeVector(27.94*m +2*m + 160*cm/2, 0, 0.403*m + 90*mm),
+                      Triger,
+                      "Triger",
+                      worldLV,
+                      false,
+                      3,
+                      true);
+
     G4double maxStep = 0.5 * mm;
     fStepLimit = new G4UserLimits(maxStep);
     worldLV->SetUserLimits(fStepLimit);
@@ -328,6 +340,11 @@ namespace project
     G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD2);
     SetSensitiveDetector("Detector2", aTrackerSD2, false);
     
+    G4String triger = "/tr";
+    TrackerSD *aTrackerSD3 = new TrackerSD(triger,
+                                          "TrackerHitsCollection");
+    G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD3);
+    SetSensitiveDetector("Triger", aTrackerSD3, false);
 
     // MAGNETIC FIELD
     magField = new MagneticField();
