@@ -10,6 +10,8 @@
 #include "G4AnalysisManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4TrajectoryContainer.hh"
+#include "G4EventManager.hh"
+#include "G4Event.hh"
 namespace project
 {
 
@@ -80,9 +82,10 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   // newHit->SeParentID(1);
   // newHit->SetNameDetector()
   fHitsCollection->insert( newHit );
-  G4cout << "Parent ID: " << parentID << ", Tracker ID: " << trackID << ", Particle: " << par << ", Energy: " << En << G4endl;
   // G4cout << "NAME det: "<< fHitsCollection->GetSDname() << G4endl; 
   // newHit->AddEdep(edep);
+  // G4cout << "Parent ID: " << parentID << ", Tracker ID: " << trackID << ", Particle: " << par << ", Energy: " << En << ", Event: " << evid<< G4endl;
+
   return true;
 }
 
@@ -92,7 +95,8 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
 {
   G4int Hits = fHitsCollection->entries();
   
-  
+        G4int evid = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
+
   auto analysisManager = G4AnalysisManager::Instance();
   for (int i = 0; i < Hits; i++)
   {
@@ -103,7 +107,7 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
       analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[i]->GetParticle());
       analysisManager->FillNtupleSColumn(5, SensitiveDetectorName);
       analysisManager->FillNtupleIColumn(6, (*fHitsCollection)[i]->GetTrackID());
-      // analysisManager->FillNtupleIColumn(7, (*fHitsCollection)[i]->GetParentID());
+      analysisManager->FillNtupleIColumn(7, evid);
       analysisManager->AddNtupleRow();
   }
   
