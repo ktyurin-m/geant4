@@ -15,6 +15,9 @@
         "complex": "cpp",
         "cstdlib": "cpp",
         "drawGraphFromDataFile.C": "cpp",
-        "_tess": "cpp"
+        "_tess": "cpp",
+        "array": "cpp",
+        "vector": "cpp",
+        "cpt.C": "cpp"
     }
 }

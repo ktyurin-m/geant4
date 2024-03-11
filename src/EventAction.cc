@@ -14,6 +14,7 @@
 #include "globals.hh"
 #include "G4RunManager.hh"
 #include "G4Run.hh"
+#include "G4AnalysisManager.hh"
 // class G4Run;
 namespace project
 {
@@ -30,8 +31,11 @@ EventAction::~EventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void EventAction::BeginOfEventAction(const G4Event*)
-{}
+void EventAction::BeginOfEventAction(const G4Event* event)
+{
+  auto analysisManager = G4AnalysisManager::Instance();
+  analysisManager->FillNtupleIColumn(7, event->GetEventID());
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
@@ -47,6 +51,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
   // periodic printing
 
   G4int eventID = event->GetEventID();
+
   if (eventID % 1000 == 0) {
     // time_t my_time = time(NULL);
     // tm *ltm = localtime(&my_time);

@@ -28,6 +28,7 @@ RunAction::RunAction()
   analysisManager->CreateNtupleSColumn("Particle");
   analysisManager->CreateNtupleSColumn("Detector");
   analysisManager->CreateNtupleIColumn("ID");
+  analysisManager->CreateNtupleIColumn("event"); // = 7
   analysisManager->FinishNtuple();
 }
 
@@ -44,7 +45,10 @@ void RunAction::BeginOfRunAction(const G4Run*)
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
   auto analysisManager = G4AnalysisManager::Instance();
   analysisManager->OpenFile( "out.root" );
-  //G4cout << "Privet" <<G4endl;
+  // analysisManager->FillNtupleIColumn(7, 2);
+    // auto event = G4RunManager::GetRunManager()->GetCurrentEvent
+    
+  // G4cout << "Event from runman: " << event  <<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

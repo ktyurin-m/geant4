@@ -9,6 +9,7 @@
 #include "G4ios.hh"
 #include "G4AnalysisManager.hh"
 #include "G4UnitsTable.hh"
+#include "G4TrajectoryContainer.hh"
 namespace project
 {
 
@@ -36,7 +37,7 @@ void TrackerSD::Initialize(G4HCofThisEvent* hce)
     = new TrackerHitsCollection(SensitiveDetectorName, collectionName[0]);
   G4cout << "SensDetName: " << SensitiveDetectorName << G4endl;
   // Add this collection in hce
-
+  
   G4int hcID
     = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
   hce->AddHitsCollection( hcID, fHitsCollection );
@@ -59,9 +60,12 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
   
   // G4cout << "Particle: " << par << G4endl;
   // G4cout << "Energy: " << En << G4endl;
+    // G4TrajectoryContainer* trajectoryContainer = event->GetTrajectoryContainer();
+  // auto event = 
   TrackerHit* newHit = new TrackerHit();
   auto touchable = aStep->GetPreStepPoint()->GetTouchable();
-  auto id = aStep->GetTrack()->GetTrackID();
+  auto trackID = aStep->GetTrack()->GetTrackID();
+  auto parentID = aStep->GetTrack()->GetParentID();
   auto transform = touchable->GetHistory()->GetTopTransform();
   auto worldPos = aStep->GetPreStepPoint()->GetPosition();
   auto localPos
@@ -72,10 +76,11 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
     newHit->SetParticle(par);
  // G4cout << "localX: " << localPos.getX() << G4endl;
   newHit->SetEdep( En );
-  newHit->SetTrackID(id);
+  newHit->SetTrackID(trackID);
+  // newHit->SeParentID(1);
   // newHit->SetNameDetector()
   fHitsCollection->insert( newHit );
-
+  G4cout << "Parent ID: " << parentID << ", Tracker ID: " << trackID << ", Particle: " << par << ", Energy: " << En << G4endl;
   // G4cout << "NAME det: "<< fHitsCollection->GetSDname() << G4endl; 
   // newHit->AddEdep(edep);
   return true;
@@ -86,9 +91,11 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep,
 void TrackerSD::EndOfEvent(G4HCofThisEvent*)
 {
   G4int Hits = fHitsCollection->entries();
+  
+  
+  auto analysisManager = G4AnalysisManager::Instance();
   for (int i = 0; i < Hits; i++)
   {
-      auto analysisManager = G4AnalysisManager::Instance();
       analysisManager->FillNtupleDColumn(0, (*fHitsCollection)[i]->GetPos().getX());
       analysisManager->FillNtupleDColumn(1, (*fHitsCollection)[i]->GetPos().getY());
       analysisManager->FillNtupleDColumn(2, (*fHitsCollection)[i]->GetPos().getZ());  
@@ -96,6 +103,7 @@ void TrackerSD::EndOfEvent(G4HCofThisEvent*)
       analysisManager->FillNtupleSColumn(4, (*fHitsCollection)[i]->GetParticle());
       analysisManager->FillNtupleSColumn(5, SensitiveDetectorName);
       analysisManager->FillNtupleIColumn(6, (*fHitsCollection)[i]->GetTrackID());
+      // analysisManager->FillNtupleIColumn(7, (*fHitsCollection)[i]->GetParentID());
       analysisManager->AddNtupleRow();
   }
   
